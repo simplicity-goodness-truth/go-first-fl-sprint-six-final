@@ -71,7 +71,12 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	convertedPayload, err := service.ConvertPayload(payload)
 
 	if err != nil {
-		http.Error(res, "Failed to convert file content:"+err.Error(), http.StatusInternalServerError)
+		
+		// Вывод информации об ошибке при неуспешной конвертации
+		
+		res.WriteHeader(http.StatusOK)
+		res.Write([]byte("Failed to convert file content:"+err.Error()))
+		
 		return
 	}
 
@@ -138,9 +143,4 @@ func writeStringToFile(filePath string, content string) error {
 	}
 
 	return nil
-}
-
-func main() {
-	http.HandleFunc("/", HandleRoot)
-	http.HandleFunc("/upload", HandleUpload)
 }

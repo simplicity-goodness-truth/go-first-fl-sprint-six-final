@@ -92,7 +92,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	err = writeStringToFile(fileName, convertedPayload)
 
 	if err != nil {
-		http.Error(res, "Failed to record file content: "+err.Error(), http.StatusInternalServerError)
+		http.Error(res, "Failed to record file content: " + err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -129,7 +129,7 @@ func writeStringToFile(filePath string, content string) error {
 
 	// Открытие файла на запись
 
-	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_TRUNC, 0755)
+	file, err := os.Create(filePath)
 
 	if err != nil {
 		return err

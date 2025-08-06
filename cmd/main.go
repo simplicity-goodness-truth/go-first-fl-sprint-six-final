@@ -11,16 +11,18 @@ import (
 func main() {
 
 	// Создание нового логгера
-	errorLog := log.New(os.Stderr, "Error\t", log.Ldate|log.Ltime)
+	logger := log.New(os.Stdout, "Обработчик кода Морзе: ", log.Ldate|log.Ltime)
 
 	// Создание нового сервера
-	server := server.NewServer(errorLog)
+	server := server.NewServer(logger)
 
 	// Запуск сервера
+	logger.Printf("Старт сервера на %s ", server.HttpServer.Addr)
+
 	err := http.ListenAndServe(server.HttpServer.Addr, server.HttpServer.Handler)
 
 	// Обработка ошибок
 	if err != nil {
-		errorLog.Fatal(err)
+		logger.Fatalf("Критическая ошибка: %v", err)
 	}
 }

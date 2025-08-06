@@ -85,7 +85,8 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Подготовка названия файла из временной отметки UTC и расширения log
-	fileName := time.Now().UTC().Format("2006-01-02_15-04-05") + filepath.Ext(".txt")
+
+	fileName := fmt.Sprintf("%s%s", time.Now().UTC().Format("2006-01-02_15-04-05") , filepath.Ext("*.txt"))
 
 	// Запись результата конвертации в файл
 	err = writeStringToFile(fileName, convertedPayload)

@@ -16,7 +16,11 @@ const indexHTML = "../index.html"
 
 // Обработка корневого эндпоинта /: возвращаем HTML из файла
 func HandleRoot(res http.ResponseWriter, req *http.Request) {
-	
+
+	// Установка типа содержимого text/html и успешного статуса
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	res.WriteHeader(http.StatusOK)
+
 	// Разрешен только метод GET
 	if req.Method != http.MethodGet {
 		http.Error(res, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -30,10 +34,6 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, "Failed to open html file:"+err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	// Установка типа содержимого text/html и успешного статуса
-	res.Header().Set("Content-Type", "text/html; charset=utf-8")
-	res.WriteHeader(http.StatusOK)
 
 	// Вывод содержимого index.html в ответ сервера
 	res.Write(rootContents)
@@ -71,18 +71,18 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	convertedPayload, err := service.ConvertPayload(payload)
 
 	if err != nil {
-		
+
 		// Вывод информации об ошибке при неуспешной конвертации
-		
+
 		res.WriteHeader(http.StatusOK)
-		res.Write([]byte("Failed to convert file content:"+err.Error()))
-		
+		res.Write([]byte("Failed to convert file content:" + err.Error()))
+
 		return
 	}
 
 	// Подготовка названия файла из временной отметки UTC и расширения log
 	fileName := time.Now().UTC().Format("20060102_150405") + filepath.Ext(".txt")
-	
+
 	// Запись результата конвертации в файл
 	err = writeStringToFile("../"+fileName, convertedPayload)
 
@@ -127,7 +127,7 @@ func readFile(filePath string) ([]byte, error) {
 func writeStringToFile(filePath string, content string) error {
 
 	// Открытие файла на запись
-	
+
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_TRUNC, 0755)
 
 	if err != nil {

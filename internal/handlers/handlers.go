@@ -28,6 +28,7 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 
 	if err != nil {
 		http.Error(res, "Failed to open html file:"+err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	// Установка типа содержимого text/html и успешного статуса

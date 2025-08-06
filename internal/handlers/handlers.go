@@ -42,6 +42,10 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 // Обработка эндпоинта /upload
 func HandleUpload(res http.ResponseWriter, req *http.Request) {
 
+	// Установка типа содержимого text/html; charset=utf-8 и успешного статуса
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
+	res.WriteHeader(http.StatusOK)
+
 	// Разрешен только метод POST
 	if req.Method != http.MethodPost {
 		http.Error(res, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -90,10 +94,6 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, "Failed to record file content: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	// Установка типа содержимого text/html; charset=utf-8 и успешного статуса
-	res.Header().Set("Content-Type", "text/html; charset=utf-8")
-	res.WriteHeader(http.StatusOK)
 
 	// Вывод результата конвертации в ответ сервера
 	res.Write([]byte(convertedPayload))

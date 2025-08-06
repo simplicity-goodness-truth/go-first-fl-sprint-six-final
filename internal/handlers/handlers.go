@@ -88,7 +88,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	fileName := time.Now().UTC().Format("2006-01-02_15-04-05") + filepath.Ext(".txt")
 
 	// Запись результата конвертации в файл
-	err = writeStringToFile("../"+fileName, convertedPayload)
+	err = writeStringToFile(fileName, convertedPayload)
 
 	if err != nil {
 		http.Error(res, "Failed to record file content: "+err.Error(), http.StatusInternalServerError)

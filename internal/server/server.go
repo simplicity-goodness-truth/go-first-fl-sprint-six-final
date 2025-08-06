@@ -27,7 +27,7 @@ func NewServer(logger *log.Logger) *Server {
 		Logger: logger,
 		HttpServer: http.Server{
 
-			Addr:         "localhost:8080",
+			Addr:         ":8080",
 			Handler:      router,
 			ErrorLog:     logger,
 			ReadTimeout:  5 * time.Second,

@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/server"
@@ -14,12 +13,12 @@ func main() {
 	logger := log.New(os.Stdout, "Обработчик кода Морзе: ", log.Ldate|log.Ltime)
 
 	// Создание нового сервера
-	server := server.NewServer(logger)
+	srv := server.NewServer(logger)
 
 	// Запуск сервера
-	logger.Printf("Старт сервера на %s ", server.HttpServer.Addr)
+	logger.Printf("Старт сервера на %s ", srv.HttpServer.Addr)
 
-	err := http.ListenAndServe(server.HttpServer.Addr, server.HttpServer.Handler)
+	err := srv.HttpServer.ListenAndServe()
 
 	// Обработка ошибок
 	if err != nil {

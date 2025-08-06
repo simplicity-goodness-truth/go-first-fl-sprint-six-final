@@ -139,3 +139,8 @@ func writeStringToFile(filePath string, content string) error {
 
 	return nil
 }
+
+func main() {
+	http.HandleFunc("/", HandleRoot)
+	http.HandleFunc("/upload", HandleUpload)
+}

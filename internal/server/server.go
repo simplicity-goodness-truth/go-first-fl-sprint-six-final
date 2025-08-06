@@ -23,18 +23,18 @@ func NewServer(logger *log.Logger) *Server {
 	router.HandleFunc("/", handlers.HandleRoot)
 
 	// Подготовка экземляра структуры сервера
-	server := Server{
-		Logger: logger,
-		HttpServer: &http.Server{
 
-			Addr:         ":8080",
-			Handler:      router,
-			ErrorLog:     logger,
-			ReadTimeout:  5 * time.Second,
-			WriteTimeout: 10 * time.Second,
-			IdleTimeout:  15 * time.Second,
-		},
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      router,
+		ErrorLog:     logger,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  15 * time.Second,
 	}
 
-	return &server
+	return &Server{
+		Logger:     logger,
+		HttpServer: server,
+	}
 }

@@ -16,7 +16,7 @@ const indexHTML = "../index.html"
 
 // Обработка корневого эндпоинта /: возвращаем HTML из файла
 func HandleRoot(res http.ResponseWriter, req *http.Request) {
-
+	
 	// Разрешен только метод GET
 	if req.Method != http.MethodGet {
 		http.Error(res, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -31,7 +31,7 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Установка типа содержимого text/html и успешного статуса
-	res.Header().Set("Content-Type", "text/html")
+	res.Header().Set("Content-Type", "text/html; charset=utf-8")
 	res.WriteHeader(http.StatusOK)
 
 	// Вывод содержимого index.html в ответ сервера
@@ -121,8 +121,7 @@ func readFile(filePath string) ([]byte, error) {
 func writeStringToFile(filePath string, content string) error {
 
 	// Открытие файла на запись
-
-	fmt.Println(filePath)
+	
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_TRUNC, 0755)
 
 	if err != nil {

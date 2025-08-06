@@ -11,7 +11,7 @@ import (
 // Структура для сервера
 type Server struct {
 	Logger     *log.Logger
-	HttpServer http.Server
+	HttpServer *http.Server
 }
 
 // Функция для создания http-роутера
@@ -25,7 +25,7 @@ func NewServer(logger *log.Logger) *Server {
 	// Подготовка экземляра структуры сервера
 	server := Server{
 		Logger: logger,
-		HttpServer: http.Server{
+		HttpServer: &http.Server{
 
 			Addr:         ":8080",
 			Handler:      router,
@@ -35,6 +35,6 @@ func NewServer(logger *log.Logger) *Server {
 			IdleTimeout:  15 * time.Second,
 		},
 	}
-	
+
 	return &server
 }

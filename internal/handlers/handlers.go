@@ -17,11 +17,17 @@ const indexHTML = "../index.html"
 // Обработка корневого эндпоинта /: возвращаем HTML из файла
 func HandleRoot(res http.ResponseWriter, req *http.Request) {
 
+	// Разрешен только метод GET
+	if req.Method != http.MethodGet {
+		http.Error(res, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	// Чтение содержимого index.html
 	rootContents, err := readFile(indexHTML)
 
 	if err != nil {
-		http.Error(res, "Failed to open html file:" + err.Error(), http.StatusBadRequest)
+		http.Error(res, "Failed to open html file:"+err.Error(), http.StatusBadRequest)
 	}
 
 	// Установка типа содержимого text/html и успешного статуса
@@ -35,10 +41,16 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 // Обработка эндпоинта /upload
 func HandleUpload(res http.ResponseWriter, req *http.Request) {
 
+	// Разрешен только метод POST
+	if req.Method != http.MethodPost {
+		http.Error(res, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	// Получение загруженного файла
 	file, _, err := req.FormFile("myFile")
 	if err != nil {
-		http.Error(res, "Failed to get file:" + err.Error(), http.StatusBadRequest)
+		http.Error(res, "Failed to get file:"+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -47,7 +59,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	// Чтение содержимого загруженного файла
 	fileContent, err := io.ReadAll(file)
 	if err != nil {
-		http.Error(res, "Failed to read file content: " + err.Error(), http.StatusInternalServerError)
+		http.Error(res, "Failed to read file content: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -75,7 +87,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 
 	// Установка типа содержимого text/html; charset=utf-8 и успешного статуса
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
-    res.WriteHeader(http.StatusOK)
+	res.WriteHeader(http.StatusOK)
 
 	// Вывод результата конвертации в ответ сервера
 	res.Write([]byte(convertedPayload))

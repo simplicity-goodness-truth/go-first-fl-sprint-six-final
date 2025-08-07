@@ -19,7 +19,7 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 
 	// Установка типа содержимого text/html и успешного статуса
 	res.Header().Set("Content-Type", "text/html; charset=utf-8")
-	res.WriteHeader(http.StatusOK)
+	
 
 	// Разрешен только метод GET
 	if req.Method != http.MethodGet {
@@ -35,6 +35,8 @@ func HandleRoot(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	res.WriteHeader(http.StatusOK)
+	
 	// Вывод содержимого index.html в ответ сервера
 	res.Write(rootContents)
 }
@@ -64,7 +66,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 	// Чтение содержимого загруженного файла
 	fileContent, err := io.ReadAll(file)
 	if err != nil {
-		http.Error(res, "Failed to read file content: "+err.Error(), http.StatusInternalServerError)
+		http.Error(res, "Failed to read file content: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -78,7 +80,7 @@ func HandleUpload(res http.ResponseWriter, req *http.Request) {
 
 		// Вывод информации об ошибке при неуспешной конвертации
 
-		res.WriteHeader(http.StatusOK)
+		res.WriteHeader(http.StatusInternalServerError)
 		res.Write([]byte("Failed to convert file content:" + err.Error()))
 
 		return
